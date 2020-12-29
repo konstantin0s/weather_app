@@ -21,8 +21,10 @@ class Home extends Component {
         super(props);
      
         this.state = {
-          cities: [],
-          sortedCities: [],
+          cities: JSON.parse(localStorage.getItem("weatherItems")) ?
+          JSON.parse(localStorage.getItem("weatherItems")) : [],
+          sortedCities: JSON.parse(localStorage.getItem("sortedCities")) ?
+          JSON.parse(localStorage.getItem("sortedCities")) : [],
           isLoading: true,
           showModal: false,
           selectedItem: ''
@@ -31,13 +33,8 @@ class Home extends Component {
   
 
       toggleDone = (e) => {
-        //   const weatherItems = JSON.parse(localStorage.getItem("weatherItems")) ?
-        //   JSON.parse(localStorage.getItem("weatherItems")) : []
-        // localStorage.removeItem("weatherItems");
-        
-        const updatedList = [...this.state.cities].
-            map(item =>  {
-                if (Number(item.id) == Number(this.state.selectedItem)) {
+        const updatedList = [...this.state.cities].map(item =>  {
+                if (Number(item.id) === Number(this.state.selectedItem)) {
                     console.log(item.id, this.state.selectedItem);
                         item.isToggle = !item.isToggle;
                     } 
@@ -50,9 +47,9 @@ class Home extends Component {
                 isLoading: false
              });
             localStorage.removeItem("weatherItems");
-            localStorage.setItem("weatherItems", JSON.stringify(updatedList));
+            localStorage.setItem("weatherItems", JSON.stringify(this.state.cities));
     
-             console.log(updatedList);
+             console.log(this.state.cities);
       }
 
     closeModal = (showModal) => {
@@ -66,6 +63,8 @@ class Home extends Component {
 
       listCities = () => {
 
+        JSON.parse(localStorage.getItem("weatherItems")) ?
+        this.setState({cities: JSON.parse(localStorage.getItem("weatherItems")), isLoading: false}) : 
             axios.get(`/api/weather`)
             .then(res => {
               const cities = res.data; //sort cities
@@ -100,29 +99,27 @@ class Home extends Component {
                 isLoading: false,
                 sortedCities: sortedByDate
             });   
-             JSON.parse(localStorage.getItem("weatherItems")) ?
-            JSON.parse(localStorage.getItem("weatherItems")) : 
-            localStorage.setItem("weatherItems", JSON.stringify(sortedByName));
+            localStorage.setItem("weatherItems", JSON.stringify(this.state.cities));
+            localStorage.setItem("sortedCities", JSON.stringify(this.state.sortedCities));
                 
             })
             .catch(err => {
                 console.log(err)
                 this.setState({cities:  JSON.parse(localStorage.getItem("weatherItems")) ?
-                JSON.parse(localStorage.getItem("weatherItems")) : [], isLoading: false})
+                JSON.parse(localStorage.getItem("weatherItems")) : [], isLoading: false,
+                sortedCities: localStorage.setItem("sortedCities", JSON.stringify(this.state.sortedCities))})
             });
     
     }
 
-    listOfCitiesToRefresh = () => {
-        if (this.state.cities > 0 ) {
-            let result = JSON.parse(localStorage.getItem("weatherItems")) ?
-              JSON.parse(localStorage.getItem("weatherItems")) : localStorage.setItem("weatherItems", JSON.stringify(this.state.cities));
-              this.setState({cities: result, isLoading: false})
-          } 
-    }
-
-    refreshPage = () => {
-        this.interval = setInterval(this.listOfCitiesToRefresh(), 500); // <- time in ms
+    refreshData = () => {
+        this.setState({cities: [],
+            sortedCities: [],
+            isLoading: true
+        });
+        localStorage.removeItem("weatherItems");
+        localStorage.removeItem("sortedCities");
+        this.interval = setInterval(this.listCities(), 500); // <- time in ms
     }
     
     stopInterval() {
@@ -146,13 +143,13 @@ class Home extends Component {
         const {showModal } = this.state;
         if (this.state.cities !== undefined) {
             return (
-                <React.Fragment>
+                <div>
                  <div>
                  <button onClick={this.showModalx}  className="button primary">
                          Show Chronological
                        </button>
                  </div>  <br />
-                      <button className="link button secondary" onClick={this.refreshPage}>Refresh!</button>
+                      <button className="link button secondary" onClick={this.refreshData}>Refresh Data!</button>
                       <PhotoContainer />
                 <div className="home">
                     { this.state.isLoading ? <Loading /> :
@@ -164,7 +161,7 @@ class Home extends Component {
                         <button
                         options={item[index]} className="btn btn-primary" onMouseUp={() =>{ this.setState({ selectedItem: item.id });}}
                         onClick={() =>{  this.toggleDone(); }} >
-                                            Toggle
+                                            {item.isToggle ? 'Hide' : 'Show'}
                         </button> 
     
                          { item.isToggle && (
@@ -242,7 +239,7 @@ class Home extends Component {
         </Zoom>
     </Modal>
 )}
-                </React.Fragment>
+                </div>
             )
 
         } else {
