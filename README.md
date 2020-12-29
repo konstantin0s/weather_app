@@ -1,15 +1,18 @@
-create-react-app already handles testing with jest and has flow typing right out of the box with a few quick commands that only take a few seconds to implement. Setting this up on your own with configuring your .babelrc, setting up your jest config inside of package.json, and more just takes much more time when you’re all on your own…
+Create-react-app already handles testing with jest and has flow typing right out of the box with a few quick commands that only take a few seconds to implement. Setting this up on your own with configuring your .babelrc, setting up your jest config inside of package.json, and more just takes much more time when you’re all on your own…
 The app is build with external api (weather where node.js, express.js is used in the backend as a middleware, and React.js framework in the front end to display the api data. The style is very minimalistic, the focus was on having a completely functional app where when a user lands for the first time can see a list of cities on home page. On the home page, the user is able to click on a city and see the weather results on a separate detail screen.
-Clone the app with: ~ git clone
-Run npm install from both folders: root folder and client folder to install all the packages.
-Add .env file into root folder with gif api key ( your own app key).
 
- From root folder, run:
-a. ~ npm install (to install middleware)
-b. ~ cd client (frontend / react)
-c. ~ npm install (install react packages)
-d. ~ cd root folder
-e. ~ npm run dev (start the backend & frontend)
+The project uses localstorage to make a copy of the weather array of objects to further manipulate it by adding an unique id to each object. By having a copy of the array, I am able to target each object and display it's details on a diferrent page. Localstorage is used also in cases where for example the the server throws errors, and when this happens, the weather data is still visible on the page as if nothing bad happened.
+
+In the front end, react uses Material UI & animations to create a simple css design but also easy to navigate on the pages
+
+NOTE: Run npm install from both folders: root folder and client folder to install all the packages.
+
+ Installation of the project
+1. root folder: ~ npm install (to install middleware) 
+2. ~ cd client (frontend / react)
+3. client folder: ~ npm install (install react packages)
+4. ~ cd root folder
+5. root folder: ~ npm run dev (start the backend & frontend)
 
 
 

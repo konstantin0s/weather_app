@@ -21,8 +21,7 @@ class App extends Component {
     <Route exact
         path="/city/:id"
         render={request => {
-          const id = request.match.params.id;
-          // const city = request.params.city.name;
+          const id = request.match.params.id
           console.log(id);
           return <City id={id} />;
         }}

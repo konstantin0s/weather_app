@@ -17,7 +17,7 @@ li {
     margin-left: 20px;
     margin-right: 20px;
     position: relative;
-    top: 110px;
+    top: 140px;
     margin-bottom: 320px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -31,11 +31,42 @@ li {
     background: whitesmoke;
 }
 
+.home img {
+    max-height: 10vh;
+    max-width: 10em;
+    width: 10em;
+    position: relative;
+    margin: 0 auto;
+}
+
 .child-city {
     position: relative;
     /* left: 1.5em; */
     margin-bottom: 1em;
     display: inline-block;
+}
+
+.button {
+  color: #fff;
+  text-decoration: none;
+   margin-right: 20px;
+    margin-left: 20px;
+     background-color: #444;
+}
+
+.primary {
+    z-index: 10;
+    position:relative;
+    top: 10px;
+    margin-bottom: 20px;
+}
+
+.secondary {
+    color: #fff !important;
+    z-index: 2;
+    position:relative;
+   margin-bottom: 20px;
+   background-color: #444;
 }
 
 
@@ -58,4 +89,61 @@ li {
     background-color: var(--sec-color);
     color: var(--primary-color);
     text-decoration: none;
+}
+
+/* modal*/
+
+
+ .modal-body {
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-height: 100%;
+ }
+
+ .modal-body img {
+   max-height: 10vh;
+   max-width: 10em;
+   width: 10em;
+   position: relative;
+   margin: 0 auto;
+ }
+
+ .modal-body {
+   flex: 1 1;
+   margin: 1em;
+   position: relative;
+   top: 50px;
+}
+
+.close-modal {
+  position: absolute;
+  right: 1em;
+  top: 2.5em;
+  cursor: pointer;
+  background: #bd2525;
+  border: none;
+  color: #fff;
+  z-index: 1000;
+}
+
+.ReactModalPortal {
+    position: relative;
+    z-index: 1000;
+    opacity: 1;
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.ReactModal__Overlay {
+    opacity: 0.95;
+    overflow-y: scroll;
+    z-index: 1000;
+    background: #ffffff !important;
+}
+
+.ReactModal__Overlay h1 {
+    text-align: center;
+    position: relative;
+top: 20px;
 }

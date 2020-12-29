@@ -2,6 +2,8 @@ const express = require('express');
 const cors_proxy = require('cors-anywhere');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+const handleErrors = require('./handleErrors');
+const { BadRequest } = require('./utils/errors');
 
 const app = express();
 
@@ -17,15 +19,22 @@ cors_proxy.createServer({
 
     //general weather - get all data
 app.get('/api/weather', async (req, res) => {
-   await axios
+    try {
+        await axios
         .get(`${url}`)
         .then(function (response) {
-            // console.log(response);
+            if (!response) {
+                throw new BadRequest('Response not satified');
+            }
             var body = response.data;
             res.json(body);
-            // console.log(body)
         })
-        .catch(err => console.log(err));
+    } catch (error) {
+        return res.status(500).json({
+          status: 'error',
+          message: 'Internal Server Error'
+        });
+    }
 });
 
 

@@ -2,24 +2,15 @@
 import React, { Component } from 'react';
 import Loading from './Loading';
 import Moment from 'moment';
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import ReactFancyBox from 'react-fancybox';
 import 'react-fancybox/lib/fancybox.css';
 import './css/citydetails.css';
+import Fade from 'react-reveal/Fade';
 
-const useStyles = makeStyles({
-    root: {
-      maxWidth: 345,
-    },
-    media: {
-      height: 140,
-    },
-  });
 
 class City extends Component {
 constructor(props) {
@@ -60,7 +51,8 @@ delayRender = () => {
     if (isLoading === false) {
 
     return (
-    <Card className={useStyles.root}>
+    <Fade right cascade>
+    <Card >
     <CardActionArea>
       <ReactFancyBox
           thumbnail={this.state.oneCity.city.picture}
@@ -73,11 +65,13 @@ delayRender = () => {
          Temperature: {temp} {" "}  {tempType}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
-       Date:  {Moment(date).format('YYYY-MM-DDTHH:mm:ss')}
+        Date:  {Moment(date).format('YYYY-MM-DD')} {" "} <br />
+        Time: {Moment(date).format('HH:mm:ss')}
         </Typography>
       </CardContent>
      </CardActionArea>
   </Card>
+  </Fade>
 )
     } else {
         return (

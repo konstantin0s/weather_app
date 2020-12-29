@@ -11,9 +11,6 @@ import './css/header.css';
             <header className="header" id="masthead">
                 <nav className="links">
                     <Link style={linkStyle} className="link" to="/">Home</Link>
-                    <Link style={linkStyle} className="link" to="/temp">Chronologic</Link>
-                    {/* <Link style={linkStyle} className="link" to="/">Refresh</Link> */}
-        
                 </nav>
             </header>
         </React.Fragment>
