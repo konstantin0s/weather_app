@@ -12,26 +12,23 @@ class App extends Component {
 
   render() {
 
-    return (
-<Router>
-<div className="App">
-      <Header />
-   <Switch>
-   <Route exact path="/" component={Home} />
-    <Route exact
-        path="/city/:id"
-        render={request => {
-          const id = request.match.params.id
-          console.log(id);
-          return <City id={id} />;
-        }}
-      /> 
-
-{/* <Route exact path="/trendings" component={Trendings} /> */}
-     </Switch>
-    <Footer />
-            </div>
-</Router>
+  return (
+    <Router>
+    <div className="App">
+          <Header />
+      <Switch>
+      <Route exact path="/" component={Home} />
+        <Route exact
+            path="/city/:id"
+            render={request => {
+              const id = request.match.params.id
+              return <City id={id} />;
+            }}
+          /> 
+        </Switch>
+        <Footer />
+                </div>
+    </Router>
     );
   }
 }

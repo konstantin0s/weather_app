@@ -31,14 +31,13 @@ class Home extends Component {
        }
       }
   
-
-      toggleDone = (e) => {
+      //hide/unhide city and preserve it after page reload
+      toggleCity = (e) => {
         const updatedList = [...this.state.cities].map(item =>  {
                 if (Number(item.id) === Number(this.state.selectedItem)) {
                     console.log(item.id, this.state.selectedItem);
                         item.isToggle = !item.isToggle;
                     } 
-
                 return item;
 
             })
@@ -67,40 +66,55 @@ class Home extends Component {
         this.setState({cities: JSON.parse(localStorage.getItem("weatherItems")), isLoading: false}) : 
             axios.get(`/api/weather`)
             .then(res => {
-              const cities = res.data; //sort cities
-            let sortedByName = [].concat(cities)
-            .sort((a, b) => a.city.name > b.city.name ? 1 : -1)
-            console.log(sortedByName);
-
-            let sortedByDate = [].concat(cities)
-            .sort((a, b) => a.date > b.date ? 1 : -1)
-            console.log(sortedByDate);
-
-            sortedByName.forEach((item, i) => {
-                item.id = i + 1;
-                item.isToggle = true;
-              })
-
-              sortedByName.map(city => {
-  
-                if (city["tempType"] === "F") {
-                    city["temp"] = ((city["temp"] - 32) / 1.8).toFixed(2);
-                    city["tempType"] = "C";
+                //check backend call for errors
+                if (res.request.status === 200) {
+                    console.log(res);
+                    const cities = res.data; 
+                    //sort cities by name (Alphabetica order)
+                  let sortedByName = [].concat(cities)
+                  .sort((a, b) => a.city.name > b.city.name ? 1 : -1)
+                  console.log(sortedByName);
+      
+                  //sort weather in chronological order
+                  let sortedByDate = [].concat(cities)
+                  .sort((a, b) => a.date > b.date ? 1 : -1)
+                  console.log(sortedByDate);
+                    
+                  //append id to every object
+                  sortedByName.forEach((item, i) => {
+                      item.id = i + 1;
+                      item.isToggle = true;
+                    })
+                    
+                    //convert K & F temperatures to Celsius
+                    sortedByName.map(city => { 
+        
+                      if (city["tempType"] === "F") {
+                          city["temp"] = ((city["temp"] - 32) / 1.8).toFixed(2);
+                          city["tempType"] = "C";
+                      }
+                       if (city["tempType"] === "K") {
+                          city["temp"] = (city["temp"] - 273.15).toFixed(2);
+                          city["tempType"] = "C";
+                       
+                      }
+                      return city;
+                  })
+                
+                    this.setState({ cities: sortedByName,
+                      isLoading: false,
+                      sortedCities: sortedByDate
+                  });   
+                  //usage of local storage as a fallback, no need to make new api calls
+                  localStorage.setItem("weatherItems", JSON.stringify(this.state.cities));
+                  localStorage.setItem("sortedCities", JSON.stringify(this.state.sortedCities));
+                } else {
+                    //internal server error - project should still run with the data from localstorage
+                    this.setState({cities:  JSON.parse(localStorage.getItem("weatherItems")) ?
+                    JSON.parse(localStorage.getItem("weatherItems")) : [], isLoading: false,
+                    sortedCities: localStorage.setItem("sortedCities", JSON.stringify(this.state.sortedCities))})
                 }
-                 if (city["tempType"] === "K") {
-                    city["temp"] = (city["temp"] - 273.15).toFixed(2);
-                    city["tempType"] = "C";
-                 
-                }
-                return city;
-            })
-            //   console.log(newList);
-              this.setState({ cities: sortedByName,
-                isLoading: false,
-                sortedCities: sortedByDate
-            });   
-            localStorage.setItem("weatherItems", JSON.stringify(this.state.cities));
-            localStorage.setItem("sortedCities", JSON.stringify(this.state.sortedCities));
+             
                 
             })
             .catch(err => {
@@ -112,6 +126,7 @@ class Home extends Component {
     
     }
 
+    //api call, get new data
     refreshData = () => {
         this.setState({cities: [],
             sortedCities: [],
@@ -160,7 +175,7 @@ class Home extends Component {
                        <Card key={index} className="rcard">
                         <button
                         options={item[index]} className="btn btn-primary" onMouseUp={() =>{ this.setState({ selectedItem: item.id });}}
-                        onClick={() =>{  this.toggleDone(); }} >
+                        onClick={() =>{  this.toggleCity(); }} >
                                             {item.isToggle ? 'Hide' : 'Show'}
                         </button> 
     
