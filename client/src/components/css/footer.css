@@ -1,0 +1,19 @@
+
+.footer-bottom {
+    background: #333;
+    color: white;
+    padding: 10px;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 120;
+    position: fixed;
+    height: 5em;
+}
+
+
+.footer-bottom .text-center {
+    position: relative;
+    top: 0px;
+}
