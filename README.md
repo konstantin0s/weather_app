@@ -49,16 +49,16 @@ NOTE: Run npm install from both folders: root folder and client folder to instal
 
 
 ## User stories
-3. As a User, I want the cities to be sorted alphabetically. = Homepage
-4. As a User, I want to be able to refresh the data that is on the home screen. = On home page, click "Refresh Data!" button.
-5. As a User, I want to be able to click on a city and see the weather results on a separate detail screen. = On home page, click "More Details.." button, under each city name.
+3. As a User, I want the cities to be sorted alphabetically. = See Homepage
+4. As a User, I want to be able to refresh the data that is on the home screen. = See on home page, click "Refresh Data!" button.
+5. As a User, I want to be able to click on a city and see the weather results on a separate detail screen. = See on home page, click "More Details.." button, under each city name.
 6. As a User, I want all the temperatures to be displayed in Celsius. The API returns also Fahrenheit and Kelvin, so they need to be converted:
 Celsius = Kelvin - 273.15
 Celsius = (Fahrenheit - 32) / 1.8 = This can be see on a separate detail screen with the weather results
-7. As a User, I want the temperatures to be displayed in chronological order. = On home page, click " Show Chronological" button.
-8. As a User, I want to have the ability to hide/unhide a city and remember my choice after a page reload. =  On home page, click "Show/Hide" button.
+7. As a User, I want the temperatures to be displayed in chronological order. = See on home page, click " Show Chronological" button.
+8. As a User, I want to have the ability to hide/unhide a city and remember my choice after a page reload. = See on home page, click "Show/Hide" button.
 
-10. As a Reviewer, I want a subject in the README.md explaining the chosen architecture. = 
+10. As a Reviewer, I want a subject in the README.md explaining the chosen architecture. = See details below:
 ## Nodejs 
 The backend is used to make these requests with NodeJS. I
 typically use NodeJS and a backend to help separate out logic, especially if I need to make calls to a database and or calls to an external api. Another good reason would be that I can handle sensitive information and it's better to do it on server side and not on client side.
@@ -75,7 +75,7 @@ Why React.js ?
 - Create-react-app already handles testing with jest and has flow typing right out of the box with a few quick commands that only take a few seconds to implement. Setting this up on your own with configuring your .babelrc, setting up your jest config inside of package.json, and more just takes much more time when you’re all on your own.
 
 14. As a Reviewer, I value the usage of TypeScript over JavaScript. If there is a reason for writing JavaScript, please specify it in the README.
-md =
+md = See details below:
  ## CHOSEN Languages
 Why Javascript? - Typescript is a powerful type system, including generics & JS features for large size project whereas JavaScript is an ideal option for small size project. The reasoning behind decision of using Javascript, is also that didn't want to spend too much time on the assignment simply because I am not very confident with using Typescript plus I have followed the the suggestion of working on under 8 hours.
 
