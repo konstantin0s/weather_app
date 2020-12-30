@@ -33,7 +33,6 @@ class City extends Component {
       .map((filteredCity) => {
         return filteredCity;
       });
-    console.log(oneCity);
     this.setState({ oneCity: oneCity[0], isLoading: false });
   };
 
@@ -42,10 +41,10 @@ class City extends Component {
   }
 
   render() {
-    // const { temp, date, tempType } = this.state.oneCity;
-    // const { name, picture } = this.state.oneCity;
-    console.log(this.props);
-    console.log(this.state.oneCity);
+    const { temp, date, tempType } = this.state.oneCity;
+    const {city} = this.state.oneCity;
+
+  
     const { isLoading } = this.state;
 
     if (isLoading === false) {
@@ -56,16 +55,16 @@ class City extends Component {
               <Card>
                 <CardActionArea>
                   <ReactFancyBox
-                    thumbnail={this.state.oneCity.city.picture}
-                    image={this.state.oneCity.city.picture}
+                    thumbnail={city.picture ? city.picture : this.state.oneCity.city.picture}
+                    image={city.picture ? city.picture : this.state.oneCity.city.picture}
                   />
                   <CardContent>
                     <Typography variant="h2" component="h2">
-                      City: {this.state.oneCity.city.name}
+                      City: {city.name? city.name : this.state.oneCity.city.name}
                     </Typography>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Temperature: {this.state.oneCity.temp}{" "}
-                      {this.state.oneCity.tempType} 
+                      Temperature: {temp}{" "}
+                      {tempType} 
                       <img className="sun" src={sun} alt="sun"/>
                     </Typography>
                     <Typography
@@ -74,9 +73,9 @@ class City extends Component {
                       component="p"
                     >
                       Date:{" "}
-                      {Moment(this.state.oneCity.date).format("YYYY-MM-DD")}{" "}
+                      {Moment(date).format("YYYY-MM-DD")}{" "}
                       <br />
-                      Time: {Moment(this.state.oneCity.date).format("HH:mm:ss")}
+                      Time: {Moment(date).format("HH:mm:ss")}
                     </Typography>
                   </CardContent>
                 </CardActionArea>

@@ -40,6 +40,11 @@ li {
   margin: 0 auto;
 }
 
+.show {
+  position: relative;
+  text-align: center;
+}
+
 .child-city {
   position: relative;
   margin-bottom: 1em;

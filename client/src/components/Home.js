@@ -24,8 +24,8 @@ class Home extends Component {
       cities: JSON.parse(localStorage.getItem("weatherItems"))
         ? JSON.parse(localStorage.getItem("weatherItems"))
         : [],
-      sortedCities: JSON.parse(localStorage.getItem("sortedCities"))
-        ? JSON.parse(localStorage.getItem("sortedCities"))
+      chronological: JSON.parse(localStorage.getItem("chronological"))
+        ? JSON.parse(localStorage.getItem("chronological"))
         : [],
       isLoading: true,
       showModal: false,
@@ -38,7 +38,6 @@ class Home extends Component {
   toggleCity = (e) => {
     const updatedList = [...this.state.cities].map((item) => {
       if (Number(item.id) === Number(this.state.selectedItem)) {
-        console.log(item.id, this.state.selectedItem);
         item.isToggle = !item.isToggle;
       }
       return item;
@@ -49,11 +48,9 @@ class Home extends Component {
     });
     localStorage.removeItem("weatherItems");
     localStorage.setItem("weatherItems", JSON.stringify(this.state.cities));
-
-    console.log(this.state.cities);
   };
 
-  closeModal = (showModal) => {
+  closeModal = () => {
     this.setState({ showModal: false });
   };
 
@@ -61,29 +58,27 @@ class Home extends Component {
     this.setState({ showModal: true });
   };
 
-  listCities = async () => {
+  listCities = () => {
     JSON.parse(localStorage.getItem("weatherItems"))
       ? this.setState({
           cities: JSON.parse(localStorage.getItem("weatherItems")),
           isLoading: false,
         })
-      : await axios
+      : axios
           .get(`/api/weather`)
           .then((res) => {
             if (res.request.status === 200) {
-              console.log(res);
+
               const cities = res.data;
-              //sort cities by name (Alphabetica order)
+              //sort cities by name (Alphabetical order)
               let sortedByName = []
                 .concat(cities)
                 .sort((a, b) => (a.city.name > b.city.name ? 1 : -1));
-              console.log(sortedByName);
 
               //sort weather in chronological order
               let sortedByDate = []
                 .concat(cities)
                 .sort((a, b) => (a.date > b.date ? 1 : -1));
-              console.log(sortedByDate);
 
               //append id to every object
               sortedByName.forEach((item, i) => {
@@ -107,7 +102,7 @@ class Home extends Component {
               this.setState({
                 cities: sortedByName,
                 isLoading: false,
-                sortedCities: sortedByDate,
+                chronological: sortedByDate,
               });
               //usage of local storage as a fallback, no need to make new api calls
               localStorage.setItem(
@@ -115,19 +110,19 @@ class Home extends Component {
                 JSON.stringify(this.state.cities)
               );
               localStorage.setItem(
-                "sortedCities",
-                JSON.stringify(this.state.sortedCities)
+                "chronological",
+                JSON.stringify(this.state.chronological)
               );
             } else {
-              //internal server error - project should still run with the data from localstorage
+              //internal server error - project should still run with the data from localstorage if not empty
               this.setState({
                 cities: JSON.parse(localStorage.getItem("weatherItems"))
                   ? JSON.parse(localStorage.getItem("weatherItems"))
                   : [],
                 isLoading: false,
-                sortedCities: localStorage.setItem(
-                  "sortedCities",
-                  JSON.stringify(this.state.sortedCities)
+                chronological: localStorage.setItem(
+                  "chronological",
+                  JSON.stringify(this.state.chronological)
                 ),
               });
             }
@@ -138,9 +133,9 @@ class Home extends Component {
                 ? JSON.parse(localStorage.getItem("weatherItems"))
                 : [],
               isLoading: false,
-              sortedCities: localStorage.setItem(
-                "sortedCities",
-                JSON.stringify(this.state.sortedCities)
+              chronological: localStorage.setItem(
+                "chronological",
+                JSON.stringify(this.state.chronological)
               ),
               error: err
             });
@@ -149,9 +144,9 @@ class Home extends Component {
 
   //api call, get new data
   refreshData = () => {
-    this.setState({ cities: [], sortedCities: [], isLoading: true });
+    this.setState({ cities: [], chronological: [], isLoading: true });
     localStorage.removeItem("weatherItems");
-    localStorage.removeItem("sortedCities");
+    localStorage.removeItem("chronological");
     this.interval = setInterval(this.listCities(), 500); // <- time in ms
   };
 
@@ -168,10 +163,9 @@ class Home extends Component {
   };
 
   render() {
-    console.log(this.state.selectedItem);
-    console.log(this.state.cities);
-    const { showModal } = this.state;
-    if (this.state.cities !== undefined) {
+
+    const { showModal, cities, isLoading, chronological } = this.state;
+    if (cities !== undefined) {
       return (
         <div>
           <div id="btns" className="btn-container">
@@ -189,16 +183,16 @@ class Home extends Component {
           <br />
           <PhotoContainer />
           <div className="home">
-            {this.state.isLoading ? (
+            {isLoading ? (
               <Loading />
             ) : (
-              this.state.cities.map((item, index) => (
-                <Fade left cascade key={index}>
-                  <Card key={index} className="rcard">
+               cities.map((item, index) => (
+                <Fade left cascade key={index} >
+                  <Card key={index} className={item.isToggle ? "rcard hide" : "rcard show"}>
                     <button
                       id="button"
                       options={item[index]}
-                      className="btn btn-primary"
+                      className="btn btn-primary" 
                       onMouseUp={() => {
                         this.setState({ selectedItem: item.id });
                       }}
@@ -266,10 +260,10 @@ class Home extends Component {
                 <h1> Chronological order</h1>
 
                 <div className="modal-body">
-                  {this.state.isLoading ? (
+                  {isLoading ? (
                     <Loading />
                   ) : (
-                    this.state.sortedCities.map((item, index) => (
+                    chronological.map((item, index) => (
                       <ErrorBoundary key={index}>
                         <Fade left cascade key={index}>
                           <Card key={index} className="rcard">
