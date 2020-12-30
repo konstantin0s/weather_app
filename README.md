@@ -42,8 +42,10 @@ NOTE: Run npm install from both folders: root folder and client folder to instal
                                                     - "Refresh data" button, on click it will make a new call to the weather api where the new data will be displayed on the page.
                                                     - "Home" button, redirects you to home page from detailed weather page.
 9.  Each element has a button with show/hide, text that display the state of the element. On clicking the button to hide/unhide the city, selection is preserved after reloading the page (Local storage keeps track of the state of the city).
+
+#Unit test
 10. Testing Nodejs server, from root folder, run: npm test
-11. Testing Reactjs, from root folder, run: npm run test
+11. Testing Reactjs, from client folder, run: npm run test
 
 
 #User stories

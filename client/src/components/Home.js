@@ -30,6 +30,7 @@ class Home extends Component {
       isLoading: true,
       showModal: false,
       selectedItem: "",
+      error: null
     };
   }
 
@@ -60,13 +61,13 @@ class Home extends Component {
     this.setState({ showModal: true });
   };
 
-  listCities = () => {
+  listCities = async () => {
     JSON.parse(localStorage.getItem("weatherItems"))
       ? this.setState({
           cities: JSON.parse(localStorage.getItem("weatherItems")),
           isLoading: false,
         })
-      : axios
+      : await axios
           .get(`/api/weather`)
           .then((res) => {
             if (res.request.status === 200) {
@@ -132,7 +133,6 @@ class Home extends Component {
             }
           })
           .catch((err) => {
-            console.log(err);
             this.setState({
               cities: JSON.parse(localStorage.getItem("weatherItems"))
                 ? JSON.parse(localStorage.getItem("weatherItems"))
@@ -142,6 +142,7 @@ class Home extends Component {
                 "sortedCities",
                 JSON.stringify(this.state.sortedCities)
               ),
+              error: err
             });
           });
   };
@@ -173,8 +174,8 @@ class Home extends Component {
     if (this.state.cities !== undefined) {
       return (
         <div>
-          <div className="btn-container">
-            <button onClick={this.showModalx} className="button secondary">
+          <div id="btns" className="btn-container">
+            <button onClick={this.showModalx} className="button secondary modal-btn">
               Show Chronological
             </button>
             <br />

@@ -10,6 +10,7 @@ import "react-fancybox/lib/fancybox.css";
 import "./css/citydetails.css";
 import Fade from "react-reveal/Fade";
 import ErrorBoundary from "./ErrorBoundary";
+import sun from './img/sun.jpeg';
 
 class City extends Component {
   constructor(props) {
@@ -64,7 +65,8 @@ class City extends Component {
                     </Typography>
                     <Typography gutterBottom variant="h5" component="h2">
                       Temperature: {this.state.oneCity.temp}{" "}
-                      {this.state.oneCity.tempType}
+                      {this.state.oneCity.tempType} 
+                      <img className="sun" src={sun} alt="sun"/>
                     </Typography>
                     <Typography
                       variant="body2"

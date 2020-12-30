@@ -1,7 +1,9 @@
+
 :root {
-  --ease: all 0.5s ease-out;
-  --primary-color: #444;
-  --sec-color: #f1d455;
+    --ease: all 0.5s ease-out;
+    --primary-color: #444;
+    --secondary-color: #55abf1;
+    --sec-color: #f1d455;
 }
 
 li {
@@ -60,7 +62,7 @@ li {
 .btn-container {
   position: relative;
   display: flex;
-  top: -51px;
+  top: -56px;
   width: 30%;
 }
 
@@ -73,6 +75,13 @@ li {
   position: relative;
   top: 0px;
   cursor: pointer;
+}
+
+.btn-container button:hover {
+    padding: 0.4rem 0.9rem;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    text-decoration: none;
 }
 
 .primary {
@@ -112,11 +121,17 @@ li {
 
 /* modal*/
 
+.react-reveal {
+  position: relative;
+  margin-bottom: 15px;
+}
+
 .modal-body {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   max-height: 100%;
+  background-color: #d4cccb;
 }
 
 .modal-body img {
