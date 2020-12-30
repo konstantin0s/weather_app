@@ -1,8 +1,15 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { render } from "@testing-library/react";
+import App from "./App";
+import { shallow } from "enzyme";
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe("App", () => {
+  // it("should render my component", () => {
+  //   const wrapper = shallow(<App />);
+  // });
+
+  it("renders without crashing", () => {
+    render(<App />);
+  });
 });

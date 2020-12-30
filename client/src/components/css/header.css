@@ -30,11 +30,44 @@
     margin-bottom: 3rem;
     transition: var(--ease);
     position: relative;
-    top: 5px;
+    top: 0px;
 }
 
 .link:hover {
     padding: 0.8rem 1.9rem;
     background: var(--secondary-color);
     color: var(--secondary-color);
+}
+
+@media screen and (min-width: 300px) and (max-width: 550px) {
+    .link {
+        display: flex;
+        justify-content: flex-end;
+        position: absolute;
+        float: right;
+        top: 8px;
+        right: 2px;
+    }
+}
+
+@media screen and (min-width: 551px) and (max-width: 667px) {
+    .link {
+        display: flex;
+        justify-content: flex-end;
+        position: absolute;
+        float: right;
+        top: 8px;
+        right: 2px;
+    }
+}
+
+@media screen and (min-width: 667px) and (max-width: 950px) {
+    .link {
+        display: flex;
+        justify-content: flex-end;
+        position: absolute;
+        float: right;
+        top: 8px;
+        right: 2px;
+    }
 }

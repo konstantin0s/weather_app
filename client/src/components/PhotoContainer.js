@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import './css/photo-container.css';
+import React, { Component } from "react";
+import "./css/photo-container.css";
 
 class PhotoContainer extends Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class PhotoContainer extends Component {
       <div ref={this.myRef} className="photo-container">
         {/* image placeholder */}
       </div>
-    )
+    );
   }
 }
 

@@ -1,119 +1,137 @@
-
 :root {
-    --ease: all 0.5s ease-out;
-    --primary-color: #444;
-    --sec-color: #f1d455;
+  --ease: all 0.5s ease-out;
+  --primary-color: #444;
+  --sec-color: #f1d455;
 }
 
 li {
-    list-style: none;
+  list-style: none;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .home {
-    margin-left: 20px;
-    margin-right: 20px;
-    position: relative;
-    top: 140px;
-    margin-bottom: 320px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 10px;
-    text-align: center;
-    align-items: center;
-    align-self: center;
-} 
+  margin-left: 20px;
+  margin-right: 20px;
+  position: relative;
+  top: 222px;
+  margin-bottom: 320px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+  text-align: center;
+  align-items: center;
+  align-self: center;
+}
 
 .home > div {
-    background: whitesmoke;
+  background: whitesmoke;
 }
 
 .home img {
-    max-height: 10vh;
-    max-width: 10em;
-    width: 10em;
-    position: relative;
-    margin: 0 auto;
+  max-height: 10vh;
+  max-width: 10em;
+  width: 10em;
+  position: relative;
+  margin: 0 auto;
 }
 
 .child-city {
-    position: relative;
-    /* left: 1.5em; */
-    margin-bottom: 1em;
-    display: inline-block;
+  position: relative;
+  margin-bottom: 1em;
+  display: inline-block;
 }
 
 .button {
   color: #fff;
   text-decoration: none;
-   margin-right: 20px;
-    margin-left: 20px;
-     background-color: #444;
+  margin-right: 20px;
+  margin-left: 20px;
+  background-color: #444;
+}
+
+.btn-primary {
+  background-color: #75261c;
+  border-color: #75261c;
+}
+
+.btn-container {
+  position: relative;
+  display: flex;
+  top: -51px;
+  width: 30%;
+}
+
+.btn-container button {
+  font-size: 1em;
+  border: 3px #fff solid;
+  padding: 1em 2.5em;
+  margin-bottom: 3rem;
+  transition: var(--ease);
+  position: relative;
+  top: 0px;
+  cursor: pointer;
 }
 
 .primary {
-    z-index: 10;
-    position:relative;
-    top: 10px;
-    margin-bottom: 20px;
+  z-index: 10;
+  position: relative;
+  top: 10px;
+  margin-bottom: 20px;
 }
 
 .secondary {
-    color: #fff !important;
-    z-index: 2;
-    position:relative;
-   margin-bottom: 20px;
-   background-color: #444;
+  color: #fff !important;
+  z-index: 2;
+  position: relative;
+  margin-bottom: 20px;
+  background-color: #444;
 }
 
-
-
 .linkx {
-    text-decoration: none;
-    font-size: 1em;
-    border: 3px #444 solid;
-    color: #333;
-    padding: 0.2em 0.8em;
-    margin-bottom: 3rem;
-    transition: var(--ease);
-    position: relative;
-    left: 0em;
-    top: 18px;
+  text-decoration: none;
+  font-size: 1em;
+  border: 3px #444 solid;
+  color: #333;
+  padding: 0.2em 0.8em;
+  margin-bottom: 3rem;
+  transition: var(--ease);
+  position: relative;
+  left: 0em;
+  top: 18px;
 }
 
 .linkx:hover {
-    padding: 0.5rem 1rem;
-    background-color: var(--sec-color);
-    color: var(--primary-color);
-    text-decoration: none;
+  padding: 0.5rem 1rem;
+  background-color: var(--sec-color);
+  color: var(--primary-color);
+  text-decoration: none;
 }
 
 /* modal*/
 
-
- .modal-body {
-  display:flex;
+.modal-body {
+  display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   max-height: 100%;
- }
+}
 
- .modal-body img {
-   max-height: 10vh;
-   max-width: 10em;
-   width: 10em;
-   position: relative;
-   margin: 0 auto;
- }
+.modal-body img {
+  max-height: 10vh;
+  max-width: 10em;
+  width: 10em;
+  position: relative;
+  margin: 0 auto;
+}
 
- .modal-body {
-   flex: 1 1;
-   margin: 1em;
-   position: relative;
-   top: 50px;
+.modal-body {
+  flex: 1 1;
+  margin: 1em;
+  position: relative;
+  top: 50px;
 }
 
 .close-modal {
@@ -128,22 +146,151 @@ li {
 }
 
 .ReactModalPortal {
-    position: relative;
-    z-index: 1000;
-    opacity: 1;
-    overflow-y: scroll;
-    height: 100%;
+  position: relative;
+  z-index: 1000;
+  opacity: 1;
+  overflow-y: scroll;
+  height: 100%;
+  text-align: center;
 }
 
 .ReactModal__Overlay {
-    opacity: 0.95;
-    overflow-y: scroll;
-    z-index: 1000;
-    background: #ffffff !important;
+  opacity: 0.95;
+  overflow-y: scroll;
+  z-index: 1000;
+  background: #ffffff !important;
 }
 
 .ReactModal__Overlay h1 {
-    text-align: center;
+  text-align: center;
+  position: relative;
+  top: 20px;
+}
+
+@media screen and (min-width: 300px) and (max-width: 550px) {
+  .home {
+    margin-left: 20px;
+    margin-right: 20px;
     position: relative;
-top: 20px;
+    top: 222px;
+    margin-bottom: 320px;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 10px;
+    text-align: center;
+    align-items: center;
+    align-self: center;
+  }
+
+  .btn-container {
+    width: 86%;
+  }
+
+  .btn-container button {
+    height: 40px;
+  }
+
+  .home img {
+    max-height: 8vh;
+    max-width: 8em;
+    width: 8em;
+    position: relative;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 551px) and (max-width: 667px) {
+  .home {
+    margin-left: 20px;
+    margin-right: 20px;
+    position: relative;
+    top: 222px;
+    margin-bottom: 320px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    text-align: center;
+    align-items: center;
+    align-self: center;
+  }
+
+  .btn-container {
+    width: 60%;
+  }
+
+  .btn-container button {
+    height: 40px;
+  }
+
+  .home img {
+    max-height: 8vh;
+    max-width: 8em;
+    width: 8em;
+    position: relative;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 668px) and (max-width: 949px) {
+  .home {
+    margin-left: 20px;
+    margin-right: 20px;
+    position: relative;
+    top: 222px;
+    margin-bottom: 320px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    text-align: center;
+    align-items: center;
+    align-self: center;
+  }
+
+  .btn-container {
+    width: 48%;
+  }
+
+  .btn-container button {
+    height: 40px;
+  }
+
+  .home img {
+    max-height: 8vh;
+    max-width: 8em;
+    width: 8em;
+    position: relative;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 950px) and (max-width: 1290px) {
+  .home {
+    margin-left: 20px;
+    margin-right: 20px;
+    position: relative;
+    top: 222px;
+    margin-bottom: 320px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    text-align: center;
+    align-items: center;
+    align-self: center;
+  }
+
+  .btn-container {
+    width: 40%;
+  }
+
+  .btn-container button {
+    height: 40px;
+  }
+
+  .home img {
+    max-height: 10vh;
+    max-width: 10em;
+    width: 10em;
+    position: relative;
+    margin: 0 auto;
+  }
 }

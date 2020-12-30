@@ -1,15 +1,17 @@
 import React from "react";
-import './css/footer.css';
+import "./css/footer.css";
 
-const Footer =() => {
+const Footer = () => {
   return (
     <div>
-
       <div className="footer-bottom">
-          <p className="text-center"> {new Date().getFullYear()} Copyright © Weather </p>
+        <p className="text-center">
+          {" "}
+          {new Date().getFullYear()} Copyright © Weather{" "}
+        </p>
       </div>
     </div>
   );
-}
+};
 
 export default Footer;

@@ -1,269 +1,329 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import Loading from './Loading';
-import PhotoContainer from './PhotoContainer';
-import './css/home.css';
+import React, { Component } from "react";
+import axios from "axios";
+import Loading from "./Loading";
+import PhotoContainer from "./PhotoContainer";
+import "./css/home.css";
 import { Link } from "react-router-dom";
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import 'react-fancybox/lib/fancybox.css';
-import Fade from 'react-reveal/Fade';
-import Modal from 'react-modal';
-import Zoom from 'react-reveal/Zoom';
-import Moment from 'moment';
-
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import "react-fancybox/lib/fancybox.css";
+import Fade from "react-reveal/Fade";
+import Modal from "react-modal";
+import Zoom from "react-reveal/Zoom";
+import Moment from "moment";
+import ErrorBoundary from "./ErrorBoundary";
 
 class Home extends Component {
-    constructor(props) {
-        super(props);
-     
-        this.state = {
-          cities: JSON.parse(localStorage.getItem("weatherItems")) ?
-          JSON.parse(localStorage.getItem("weatherItems")) : [],
-          sortedCities: JSON.parse(localStorage.getItem("sortedCities")) ?
-          JSON.parse(localStorage.getItem("sortedCities")) : [],
-          isLoading: true,
-          showModal: false,
-          selectedItem: ''
-       }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      cities: JSON.parse(localStorage.getItem("weatherItems"))
+        ? JSON.parse(localStorage.getItem("weatherItems"))
+        : [],
+      sortedCities: JSON.parse(localStorage.getItem("sortedCities"))
+        ? JSON.parse(localStorage.getItem("sortedCities"))
+        : [],
+      isLoading: true,
+      showModal: false,
+      selectedItem: "",
+    };
+  }
+
+  //hide/unhide city and preserve it after page reload
+  toggleCity = (e) => {
+    const updatedList = [...this.state.cities].map((item) => {
+      if (Number(item.id) === Number(this.state.selectedItem)) {
+        console.log(item.id, this.state.selectedItem);
+        item.isToggle = !item.isToggle;
       }
-  
-      //hide/unhide city and preserve it after page reload
-      toggleCity = (e) => {
-        const updatedList = [...this.state.cities].map(item =>  {
-                if (Number(item.id) === Number(this.state.selectedItem)) {
-                    console.log(item.id, this.state.selectedItem);
-                        item.isToggle = !item.isToggle;
-                    } 
-                return item;
+      return item;
+    });
+    this.setState({
+      cities: updatedList,
+      isLoading: false,
+    });
+    localStorage.removeItem("weatherItems");
+    localStorage.setItem("weatherItems", JSON.stringify(this.state.cities));
 
-            })
-            this.setState({ 
-                cities: updatedList,
-                isLoading: false
-             });
-            localStorage.removeItem("weatherItems");
-            localStorage.setItem("weatherItems", JSON.stringify(this.state.cities));
-    
-             console.log(this.state.cities);
-      }
+    console.log(this.state.cities);
+  };
 
-    closeModal = (showModal) => {
-        this.setState({showModal: false})
-    }
+  closeModal = (showModal) => {
+    this.setState({ showModal: false });
+  };
 
-    showModalx = () => {
-        this.setState({showModal: true })
-    }
+  showModalx = () => {
+    this.setState({ showModal: true });
+  };
 
+  listCities = () => {
+    JSON.parse(localStorage.getItem("weatherItems"))
+      ? this.setState({
+          cities: JSON.parse(localStorage.getItem("weatherItems")),
+          isLoading: false,
+        })
+      : axios
+          .get(`/api/weather`)
+          .then((res) => {
+            if (res.request.status === 200) {
+              console.log(res);
+              const cities = res.data;
+              //sort cities by name (Alphabetica order)
+              let sortedByName = []
+                .concat(cities)
+                .sort((a, b) => (a.city.name > b.city.name ? 1 : -1));
+              console.log(sortedByName);
 
-      listCities = () => {
+              //sort weather in chronological order
+              let sortedByDate = []
+                .concat(cities)
+                .sort((a, b) => (a.date > b.date ? 1 : -1));
+              console.log(sortedByDate);
 
-        JSON.parse(localStorage.getItem("weatherItems")) ?
-        this.setState({cities: JSON.parse(localStorage.getItem("weatherItems")), isLoading: false}) : 
-            axios.get(`/api/weather`)
-            .then(res => {
-                //check backend call for errors
-                if (res.request.status === 200) {
-                    console.log(res);
-                    const cities = res.data; 
-                    //sort cities by name (Alphabetica order)
-                  let sortedByName = [].concat(cities)
-                  .sort((a, b) => a.city.name > b.city.name ? 1 : -1)
-                  console.log(sortedByName);
-      
-                  //sort weather in chronological order
-                  let sortedByDate = [].concat(cities)
-                  .sort((a, b) => a.date > b.date ? 1 : -1)
-                  console.log(sortedByDate);
-                    
-                  //append id to every object
-                  sortedByName.forEach((item, i) => {
-                      item.id = i + 1;
-                      item.isToggle = true;
-                    })
-                    
-                    //convert K & F temperatures to Celsius
-                    sortedByName.map(city => { 
-        
-                      if (city["tempType"] === "F") {
-                          city["temp"] = ((city["temp"] - 32) / 1.8).toFixed(2);
-                          city["tempType"] = "C";
-                      }
-                       if (city["tempType"] === "K") {
-                          city["temp"] = (city["temp"] - 273.15).toFixed(2);
-                          city["tempType"] = "C";
-                       
-                      }
-                      return city;
-                  })
-                
-                    this.setState({ cities: sortedByName,
-                      isLoading: false,
-                      sortedCities: sortedByDate
-                  });   
-                  //usage of local storage as a fallback, no need to make new api calls
-                  localStorage.setItem("weatherItems", JSON.stringify(this.state.cities));
-                  localStorage.setItem("sortedCities", JSON.stringify(this.state.sortedCities));
-                } else {
-                    //internal server error - project should still run with the data from localstorage
-                    this.setState({cities:  JSON.parse(localStorage.getItem("weatherItems")) ?
-                    JSON.parse(localStorage.getItem("weatherItems")) : [], isLoading: false,
-                    sortedCities: localStorage.setItem("sortedCities", JSON.stringify(this.state.sortedCities))})
+              //append id to every object
+              sortedByName.forEach((item, i) => {
+                item.id = i + 1;
+                item.isToggle = true;
+              });
+
+              //convert K & F temperatures to Celsius
+              sortedByName.map((city) => {
+                if (city["tempType"] === "F") {
+                  city["temp"] = ((city["temp"] - 32) / 1.8).toFixed(2);
+                  city["tempType"] = "C";
                 }
-             
-                
-            })
-            .catch(err => {
-                console.log(err)
-                this.setState({cities:  JSON.parse(localStorage.getItem("weatherItems")) ?
-                JSON.parse(localStorage.getItem("weatherItems")) : [], isLoading: false,
-                sortedCities: localStorage.setItem("sortedCities", JSON.stringify(this.state.sortedCities))})
+                if (city["tempType"] === "K") {
+                  city["temp"] = (city["temp"] - 273.15).toFixed(2);
+                  city["tempType"] = "C";
+                }
+                return city;
+              });
+
+              this.setState({
+                cities: sortedByName,
+                isLoading: false,
+                sortedCities: sortedByDate,
+              });
+              //usage of local storage as a fallback, no need to make new api calls
+              localStorage.setItem(
+                "weatherItems",
+                JSON.stringify(this.state.cities)
+              );
+              localStorage.setItem(
+                "sortedCities",
+                JSON.stringify(this.state.sortedCities)
+              );
+            } else {
+              //internal server error - project should still run with the data from localstorage
+              this.setState({
+                cities: JSON.parse(localStorage.getItem("weatherItems"))
+                  ? JSON.parse(localStorage.getItem("weatherItems"))
+                  : [],
+                isLoading: false,
+                sortedCities: localStorage.setItem(
+                  "sortedCities",
+                  JSON.stringify(this.state.sortedCities)
+                ),
+              });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            this.setState({
+              cities: JSON.parse(localStorage.getItem("weatherItems"))
+                ? JSON.parse(localStorage.getItem("weatherItems"))
+                : [],
+              isLoading: false,
+              sortedCities: localStorage.setItem(
+                "sortedCities",
+                JSON.stringify(this.state.sortedCities)
+              ),
             });
-    
-    }
+          });
+  };
 
-    //api call, get new data
-    refreshData = () => {
-        this.setState({cities: [],
-            sortedCities: [],
-            isLoading: true
-        });
-        localStorage.removeItem("weatherItems");
-        localStorage.removeItem("sortedCities");
-        this.interval = setInterval(this.listCities(), 500); // <- time in ms
-    }
-    
-    stopInterval() {
-        clearInterval(this.interval);
-      }
-      
-    
-    componentDidMount() {
-        this.listCities();
-    }
+  //api call, get new data
+  refreshData = () => {
+    this.setState({ cities: [], sortedCities: [], isLoading: true });
+    localStorage.removeItem("weatherItems");
+    localStorage.removeItem("sortedCities");
+    this.interval = setInterval(this.listCities(), 500); // <- time in ms
+  };
 
-      componentWillUnmount() {
-        this.stopInterval();
-      }
+  stopInterval = () => {
+    clearInterval(this.interval);
+  };
 
+  componentDidMount = () => {
+    this.listCities();
+  };
 
+  componentWillUnmount = () => {
+    this.stopInterval();
+  };
 
-    render() {
-        console.log(this.state.selectedItem);
-        console.log(this.state.cities);
-        const {showModal } = this.state;
-        if (this.state.cities !== undefined) {
-            return (
-                <div>
-                 <div>
-                 <button onClick={this.showModalx}  className="button primary">
-                         Show Chronological
-                       </button>
-                 </div>  <br />
-                      <button className="link button secondary" onClick={this.refreshData}>Refresh Data!</button>
-                      <PhotoContainer />
-                <div className="home">
-                    { this.state.isLoading ? <Loading /> :
-                      this.state.cities.map((item, index) => (
-                        
-                    <Fade left cascade key={index}>
-    
-                       <Card key={index} className="rcard">
-                        <button
-                        options={item[index]} className="btn btn-primary" onMouseUp={() =>{ this.setState({ selectedItem: item.id });}}
-                        onClick={() =>{  this.toggleCity(); }} >
-                                            {item.isToggle ? 'Hide' : 'Show'}
-                        </button> 
-    
-                         { item.isToggle && (
-                               <div>
-                                <CardActionArea>
-                                  <CardContent>
-                                  <Typography gutterBottom variant="h5" component="h2">
-                                  <img src={item.city.picture} alt={item.city.picture} />
-                                  </Typography>
-                                  <Typography gutterBottom variant="h5" component="h2">
-                                  {item.city.name}
-                                  </Typography>
-                                  </CardContent>
-                              </CardActionArea>
-                              <CardActions>
-                               <Link className="linkx" city={item} 
-                                id={item.id} to={ { 
-                                  pathname: "/city/" + item.id,
-                                  myCustomProps: item
-                              }}>
-                                          More details..
-                              </Link>
-                              
-                              </CardActions>
-                            </div>
+  render() {
+    console.log(this.state.selectedItem);
+    console.log(this.state.cities);
+    const { showModal } = this.state;
+    if (this.state.cities !== undefined) {
+      return (
+        <div>
+          <div className="btn-container">
+            <button onClick={this.showModalx} className="button secondary">
+              Show Chronological
+            </button>
+            <br />
+            <button
+              className="link button secondary"
+              onClick={this.refreshData}
+            >
+              Refresh Data!
+            </button>
+          </div>{" "}
+          <br />
+          <PhotoContainer />
+          <div className="home">
+            {this.state.isLoading ? (
+              <Loading />
+            ) : (
+              this.state.cities.map((item, index) => (
+                <Fade left cascade key={index}>
+                  <Card key={index} className="rcard">
+                    <button
+                      id="button"
+                      options={item[index]}
+                      className="btn btn-primary"
+                      onMouseUp={() => {
+                        this.setState({ selectedItem: item.id });
+                      }}
+                      onClick={() => {
+                        this.toggleCity();
+                      }}
+                    >
+                      {item.isToggle ? "Hide" : "Show"}
+                    </button>
 
-                          )}
-    
-                        </Card>
-                      
-                        </Fade>              
-                        
-                    ))} 
-    
-                </div>
-                {showModal && (
-    <Modal className="modalx" ariaHideApp={false}
-    isOpen={true} onRequestClose={this.closeModal}>
-        <Zoom>
-           <button className="close-modal"
-             onClick={this.closeModal}
-            >X</button>
-
-<h1> Chronological order</h1>
-        <div className="modal-body">
-    
-          { this.state.isLoading ? <Loading /> :
-                      this.state.sortedCities.map((item, index) => (
-                        
-                      <Fade left cascade key={index}>
-                    
-                       <Card key={index} className="rcard">
+                    {item.isToggle && (
+                      <div>
                         <CardActionArea>
-                            <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
-                            <img src={item.city.picture} alt={item.city.picture} />
+                          <CardContent>
+                            <Typography
+                              gutterBottom
+                              variant="h5"
+                              component="h2"
+                            >
+                              <img
+                                src={item.city.picture}
+                                alt={item.city.picture}
+                              />
                             </Typography>
-                            <Typography gutterBottom variant="h5" component="h2">
-                            {item.city.name} 
+                            <Typography
+                              gutterBottom
+                              variant="h5"
+                              component="h2"
+                            >
+                              {item.city.name}
                             </Typography>
-                            <Typography gutterBottom variant="h5" component="h2">
-                            Temperature: {item.temp} {" "}  {item.tempType}
-                            </Typography>
-                            <Typography gutterBottom variant="h5" component="h2">
-                            Date:  {Moment(item.date).format('YYYY-MM-DD')} {" "} <br />
-                            Time: {Moment(item.date).format('HH:mm:ss')} 
-                            </Typography>
-                            </CardContent>
+                          </CardContent>
                         </CardActionArea>
-                        </Card>
-                        </Fade>              
-                        
-                    ))} 
-            </div>
-        </Zoom>
-    </Modal>
-)}
-                </div>
-            )
+                        <CardActions>
+                          <Link
+                            className="linkx"
+                            city={item}
+                            id={item.id}
+                            to={{
+                              pathname: "/city/" + item.id,
+                              myCustomProps: item,
+                            }}
+                          >
+                            More details..
+                          </Link>
+                        </CardActions>
+                      </div>
+                    )}
+                  </Card>
+                </Fade>
+              ))
+            )}
+          </div>
+          {showModal && (
+            <Modal
+              className="modalx"
+              ariaHideApp={false}
+              isOpen={true}
+              onRequestClose={this.closeModal}
+            >
+              <Zoom>
+                <button className="close-modal" onClick={this.closeModal}>
+                  X
+                </button>
+                <h1> Chronological order</h1>
 
-        } else {
-            return(
-                <Loading />
-            );
-        }
-    
+                <div className="modal-body">
+                  {this.state.isLoading ? (
+                    <Loading />
+                  ) : (
+                    this.state.sortedCities.map((item, index) => (
+                      <ErrorBoundary key={index}>
+                        <Fade left cascade key={index}>
+                          <Card key={index} className="rcard">
+                            <CardActionArea>
+                              <CardContent>
+                                <Typography
+                                  gutterBottom
+                                  variant="h5"
+                                  component="h2"
+                                >
+                                  <img
+                                    src={item.city.picture}
+                                    alt={item.city.picture}
+                                  />
+                                </Typography>
+                                <Typography
+                                  gutterBottom
+                                  variant="h5"
+                                  component="h2"
+                                >
+                                  {item.city.name}
+                                </Typography>
+                                <Typography
+                                  gutterBottom
+                                  variant="h5"
+                                  component="h2"
+                                >
+                                  Temperature: {item.temp} {item.tempType}
+                                </Typography>
+                                <Typography
+                                  gutterBottom
+                                  variant="h5"
+                                  component="h2"
+                                >
+                                  Date: {Moment(item.date).format("YYYY-MM-DD")}{" "}
+                                  <br />
+                                  Time: {Moment(item.date).format("HH:mm:ss")}
+                                </Typography>
+                              </CardContent>
+                            </CardActionArea>
+                          </Card>
+                        </Fade>
+                      </ErrorBoundary>
+                    ))
+                  )}
+                </div>
+              </Zoom>
+            </Modal>
+          )}
+        </div>
+      );
+    } else {
+      return <Loading />;
     }
+  }
 }
 
 export default Home;
