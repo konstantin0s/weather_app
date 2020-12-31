@@ -1,20 +1,21 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Loading from "./Loading";
-import PhotoContainer from "./PhotoContainer";
-import "./css/home.css";
 import { Link } from "react-router-dom";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import "react-fancybox/lib/fancybox.css";
 import Fade from "react-reveal/Fade";
 import Modal from "react-modal";
 import Zoom from "react-reveal/Zoom";
 import Moment from "moment";
+import Loading from "./Loading";
+import PhotoContainer from "./PhotoContainer";
 import ErrorBoundary from "./ErrorBoundary";
+import sun from './img/sun.jpeg';
+import "./css/home.css";
+import "react-fancybox/lib/fancybox.css";
 
 class Home extends Component {
   constructor(props) {
@@ -120,10 +121,9 @@ class Home extends Component {
                   ? JSON.parse(localStorage.getItem("weatherItems"))
                   : [],
                 isLoading: false,
-                chronological: localStorage.setItem(
-                  "chronological",
-                  JSON.stringify(this.state.chronological)
-                ),
+                chronological: JSON.parse(localStorage.getItem("chronological"))
+                ? JSON.parse(localStorage.getItem("chronological"))
+                : []
               });
             }
           })
@@ -133,10 +133,9 @@ class Home extends Component {
                 ? JSON.parse(localStorage.getItem("weatherItems"))
                 : [],
               isLoading: false,
-              chronological: localStorage.setItem(
-                "chronological",
-                JSON.stringify(this.state.chronological)
-              ),
+              chronological: JSON.parse(localStorage.getItem("chronological"))
+                ? JSON.parse(localStorage.getItem("chronological"))
+                : [],
               error: err
             });
           });
@@ -175,8 +174,7 @@ class Home extends Component {
             <br />
             <button
               className="link button secondary"
-              onClick={this.refreshData}
-            >
+              onClick={this.refreshData}>
               Refresh Data!
             </button>
           </div>{" "}
@@ -212,7 +210,7 @@ class Home extends Component {
                               variant="h5"
                               component="h2"
                             >
-                              <img
+                              <img className="img"
                                 src={item.city.picture}
                                 alt={item.city.picture}
                               />
@@ -223,6 +221,7 @@ class Home extends Component {
                               component="h2"
                             >
                               {item.city.name}
+                              <img className="sunset" src={sun} alt="sun"/>
                             </Typography>
                           </CardContent>
                         </CardActionArea>
@@ -274,7 +273,7 @@ class Home extends Component {
                                   variant="h5"
                                   component="h2"
                                 >
-                                  <img
+                                  <img className="img"
                                     src={item.city.picture}
                                     alt={item.city.picture}
                                   />

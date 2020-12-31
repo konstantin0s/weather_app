@@ -59,12 +59,13 @@ class City extends Component {
                     image={city.picture ? city.picture : this.state.oneCity.city.picture}
                   />
                   <CardContent>
+                  <Typography variant="h2" component="h2">
+                      TODAY'S WEATHER FORECAST
+                    </Typography>
                     <Typography variant="h2" component="h2">
-                      City: {city.name? city.name : this.state.oneCity.city.name}
+                       {city.name? city.name : this.state.oneCity.city.name}     {temp}{" "}  {tempType}&#9900;
                     </Typography>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Temperature: {temp}{" "}
-                      {tempType} 
                       <img className="sun" src={sun} alt="sun"/>
                     </Typography>
                     <Typography
@@ -72,10 +73,8 @@ class City extends Component {
                       color="textSecondary"
                       component="p"
                     >
-                      Date:{" "}
-                      {Moment(date).format("YYYY-MM-DD")}{" "}
-                      <br />
-                      Time: {Moment(date).format("HH:mm:ss")}
+                       {" "}
+                      {Moment(date).format("YYYY-MM-DD")}{" "}  {Moment(date).format("HH:mm:ss")}
                     </Typography>
                   </CardContent>
                 </CardActionArea>

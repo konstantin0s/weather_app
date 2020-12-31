@@ -14,3 +14,8 @@ body, #root {
   margin: 0;
   background-color: #d4cccb;
 }
+
+body, button {
+  font-size: 1em;
+  font-family: Arial, Montserat, sans-serif;
+}
