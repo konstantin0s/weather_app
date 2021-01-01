@@ -81,7 +81,7 @@ class Home extends Component {
                 .concat(cities)
                 .sort((a, b) => (a.date > b.date ? 1 : -1));
 
-              //append id to every object
+              //append id & isToggle to each object
               sortedByName.forEach((item, i) => {
                 item.id = i + 1;
                 item.isToggle = true;
@@ -115,7 +115,7 @@ class Home extends Component {
                 JSON.stringify(this.state.chronological)
               );
             } else {
-              //internal server error - project should still run with the data from localstorage if not empty
+              //internal server error - project should still run with the data from localstorage(if not empty)
               this.setState({
                 cities: JSON.parse(localStorage.getItem("weatherItems"))
                   ? JSON.parse(localStorage.getItem("weatherItems"))
@@ -141,7 +141,7 @@ class Home extends Component {
           });
   };
 
-  //api call, get new data
+  //refresh/clean & get new data
   refreshData = () => {
     this.setState({ cities: [], chronological: [], isLoading: true });
     localStorage.removeItem("weatherItems");
@@ -153,8 +153,12 @@ class Home extends Component {
     clearInterval(this.interval);
   };
 
-  componentDidMount = () => {
-    this.listCities();
+   componentDidMount = async () => {
+    try {
+      await this.listCities();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   componentWillUnmount = () => {

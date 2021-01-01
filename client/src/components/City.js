@@ -36,15 +36,17 @@ class City extends Component {
     this.setState({ oneCity: oneCity[0], isLoading: false });
   };
 
-  componentDidMount() {
-    this.fetchCity();
+  componentDidMount = async () => {
+    try {
+      await this.fetchCity();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
     const { temp, date, tempType } = this.state.oneCity;
     const {city} = this.state.oneCity;
-
-  
     const { isLoading } = this.state;
 
     if (isLoading === false) {
@@ -63,7 +65,7 @@ class City extends Component {
                       TODAY'S WEATHER FORECAST
                     </Typography>
                     <Typography variant="h2" component="h2">
-                       {city.name? city.name : this.state.oneCity.city.name}     {temp}{" "}  {tempType}&#9900;
+                       {city.name ? city.name : this.state.oneCity.city.name},     {temp}{" "}  {tempType}&#9900;
                     </Typography>
                     <Typography gutterBottom variant="h5" component="h2">
                       <img className="sun" src={sun} alt="sun"/>
@@ -74,7 +76,7 @@ class City extends Component {
                       component="p"
                     >
                        {" "}
-                      {Moment(date).format("YYYY-MM-DD")}{" "}  {Moment(date).format("HH:mm:ss")}
+                      {Moment(date).format("YYYY-MM-DD")}{" "} - {Moment(date).format("HH:mm:ss")}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
