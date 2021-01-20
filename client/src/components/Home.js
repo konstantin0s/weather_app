@@ -16,6 +16,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import sun from './img/sun.jpeg';
 import "./css/home.css";
 import "react-fancybox/lib/fancybox.css";
+import PropTypes from 'prop-types';
 
 class Home extends Component {
   constructor(props) {
@@ -34,6 +35,8 @@ class Home extends Component {
       error: null
     };
   }
+
+  
 
   //hide/unhide city and preserve it after page reload
   toggleCity = (e) => {
@@ -323,5 +326,7 @@ class Home extends Component {
     }
   }
 }
+
+
 
 export default Home;

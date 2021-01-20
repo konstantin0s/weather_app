@@ -7,7 +7,7 @@ const { BadRequest } = require('./utils/errors');
 
 const app = express();
 
-const url = 'https://us-central1-mobile-assignment-server.cloudfunctions.net/weather';
+const url = process.env.EXTERNAL_URL;
 
 //enables cors
 app.use(bodyParser.json());
