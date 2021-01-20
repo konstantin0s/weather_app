@@ -1,5 +1,5 @@
 
-## Welcome to Weather API, Elements Assignment
+## Welcome to Weather API
 
 ## /*** About this file
      The purpose of this file is to provide overview, setup instructions and background information of the project.
@@ -8,7 +8,7 @@
 ## ** /
 
 ## SHORT DESCRIPTION & Project Technical Specifications
-This project is a node/react project build with external weather api where node.js, express.js is used in the backend as a middleware, and React.js framework in the front end to display the api data. The style is very minimalistic, the focus was on having a completely functional app where when a user can land on the home page and can see a list of cities. On this page, the user is able to click on a city and see the weather results  on a separate detail screen. As requested in the assignment, the user is able to show/hide a city and the status of that choice is remembered when the page reloads. 
+This project is a node/react project build with external weather api where node.js, express.js is used in the backend as a middleware, and React.js framework in the front end to display the api data. The style is very minimalistic, the focus was on having a completely functional app where when a user can land on the home page and can see a list of cities. On this page, the user is able to click on a city and see the weather results  on a separate detail screen. The goal: the user should be able to show/hide a city and the status of that choice is remembered when the page reloads. 
 
 The project uses localstorage to make a copy of the weather array of objects to serve as a backup in case the server goes down. By having a copy of each object within the array, I am able to target a specific object to further display it's details on a diferrent page. Localstorage is used also for reducing calls to the server, the check is done and if there is data from server stored, then the call is ignored. If for some reason, the server is down, the app will keep running by simply using localstorage data.
 The backend has it's own handle error in case something is not working as it should.
@@ -16,16 +16,17 @@ The backend has it's own handle error in case something is not working as it sho
 In the front end, react uses Material UI & animations to create a simple css design but also easy to navigate on the page.
 
 ## App requirements
-   1) Ubuntu OS/Mac/Linux terminal
+   1) Windows / OS/Mac/ Linux terminal
    2) Node
    3) Npm
    4) React
 
 
 NOTE: Run npm install from both folders: root folder and client folder to install all the packages.
+.env file should be created in the root folder, where the url(endpoint) should be added. However, the end point is not available to the public.
 
 ## Installing project specific dependency packages and tools:
-1. Unzip folder & cd elements_assignment folder.
+1. Unzip folder & cd weather_app folder.
 2. root folder: ~ npm install (to install middleware) 
 3. ~ cd client (frontend / react)
 4. client folder: ~ npm install (install react packages)
@@ -73,10 +74,5 @@ Why React.js ?
 - Less complex implementation.
 - Better caching. A single-page app can cache any local data effectively. 
 - Create-react-app already handles testing with jest and has flow typing right out of the box with a few quick commands that only take a few seconds to implement. Setting this up on your own with configuring your .babelrc, setting up your jest config inside of package.json, and more just takes much more time when you’re all on your own.
-
-14. As a Reviewer, I value the usage of TypeScript over JavaScript. If there is a reason for writing JavaScript, please specify it in the README.
-md = See details below:
- ## CHOSEN Languages
-Why Javascript? - Typescript is a powerful type system, including generics & JS features for large size project whereas JavaScript is an ideal option for small size project. The reasoning behind decision of using Javascript, is also that didn't want to spend too much time on the assignment simply because I am not very confident with using Typescript plus I have followed the the suggestion of working on under 8 hours.
 
 
